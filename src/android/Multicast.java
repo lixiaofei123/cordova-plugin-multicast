@@ -51,7 +51,7 @@ public class Multicast extends CordovaPlugin {
                     int port = packet.getPort();
 
                     Multicast.this.webView.sendJavascript(
-                        "cordova.require('org.jarvus.cordova.multicast')._onMessage("
+                        "cordova.require('org.jarvus.cordova.multicast.multicast')._onMessage("
                             + this.m_socketId + ","
                             + "'" + msg + "',"
                             + "'" + address + "',"
