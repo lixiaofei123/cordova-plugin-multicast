@@ -38,8 +38,10 @@ public class Multicast extends CordovaPlugin {
         public void run() {
             byte[] data = new byte[2048]; // investigate MSG_PEEK and MSG_TRUNC in java
             DatagramPacket packet = new DatagramPacket(data, data.length);
+            Log.d(TAG, "Starting loop!");
             while (true) {
                 try {
+                    Log.d(TAG, "Waitin for packet!");
                     this.m_socket.receive(packet);
                     String msg = new String(data, 0, packet.getLength(), "UTF-8")
                                     .replace("'", "\'")
