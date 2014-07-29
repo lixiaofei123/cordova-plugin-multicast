@@ -32,7 +32,7 @@ Socket.prototype.close = function () {
 Socket.prototype.send = function (buffer, destAddress, destPort, callback) {
     callback = callback || function () { };
     exec(callback.bind(null, null), // success
-         callback.bind(errorHandler), // failure
+         callback.bind(null), // failure
          'Multicast',
          'send',
          [ this._socketId, buffer, destAddress, destPort ]);
@@ -45,7 +45,7 @@ Socket.prototype.joinGroup = function (address, callback) {
     console.log('joinGroup');
     callback = callback || function () { };
     if (!this._multicastSocket) throw new Error('Invalid operation');
-    exec(callback.bind(null, null), callback.bind(errorHandler), 'Multicast', 'joinGroup', [ this._socketId, address ]);
+    exec(callback.bind(null, null), callback.bind(null), 'Multicast', 'joinGroup', [ this._socketId, address ]);
 };
 
 Socket.prototype.leaveGroup = function (address, callback) {
