@@ -19,7 +19,7 @@ Socket.prototype.on = function (event, callback) {
 
 Socket.prototype.bind = function (port, callback) {
     callback = callback || function () { };
-    exec(callback.bind(null, null), callback.bind(errorHandler), 'Multicast', 'bind', [ this._socketId, port ]);
+    exec(callback.bind(null, null), callback.bind(null), 'Multicast', 'bind', [ this._socketId, port ]);
 };
 
 Socket.prototype.close = function () {
@@ -51,7 +51,7 @@ Socket.prototype.joinGroup = function (address, callback) {
 Socket.prototype.leaveGroup = function (address, callback) {
     callback = callback || function () { };
     if (!this._multicastSocket) throw new Error('Invalid operation');
-    exec(callback.bind(null, null), errorHandler, 'Multicast', 'leaveGroup', [ this._socketId, address ]);
+    exec(callback.bind(null, null), callback.bind(null), 'Multicast', 'leaveGroup', [ this._socketId, address ]);
 };
 
 function createSocket(type) {
@@ -68,10 +68,6 @@ function onMessage(id, msg, remoteAddress, remotePort) {
     if (socket && 'message' in socket._eventHandlers) {
         socket._eventHandlers['message'].call(null, msg, { address: remoteAddress, port: remotePort });
     }
-}
-
-function errorHandler() {
-    debugger
 }
 
 module.exports = {
