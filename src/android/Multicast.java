@@ -16,7 +16,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 public class Multicast extends CordovaPlugin {
-    private static final String TAG = Datagram.class.getSimpleName();
+    private static final String TAG = Multicast.class.getSimpleName();
 
     SparseArray<DatagramSocket> m_sockets;
     SparseArray<SocketListener> m_listeners;
