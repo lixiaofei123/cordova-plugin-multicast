@@ -6,7 +6,7 @@
 
 @implementation CDVMulticast
 
-MulticastClient* multicastClient;
+// MulticastClient* multicastClient;
 
 /*
 - (void)pluginInitialize
