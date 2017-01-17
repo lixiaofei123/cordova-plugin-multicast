@@ -48,7 +48,7 @@
      <platform name="ios">
          <config-file target="config.xml" parent="/*">
              <feature name="Multicast">
-                 <param name="ios-package" value="Multicast" />
+                 <param name="ios-package" value="CDVMulticast" />
              </feature>
          </config-file>
 
