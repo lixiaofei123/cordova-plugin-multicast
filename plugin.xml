@@ -44,5 +44,18 @@
 
         <source-file src="src/android/Multicast.java" target-dir="src/org/jarvus/cordova/multicast" />
     </platform>
+    <!-- ios -->
+     <platform name="ios">
+         <config-file target="config.xml" parent="/*">
+             <feature name="Multicast">
+                 <param name="ios-package" value="Multicast" />
+             </feature>
+         </config-file>
 
+         <header-file src="src/ios/CDVMulticast.h" />
+         <source-file src="src/ios/CDVMulticast.m" />
+
+         <framework src="UIKit.framework" weak="true" />
+
+     </platform>
 </plugin>
