@@ -125,6 +125,36 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)create:(CDVInvokedUrlCommand *)command
+{
+    CDVPluginResult *pluginResult = nil;
+    NSString *value = [command.arguments objectAtIndex:0];
+    
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)joinGroup:(CDVInvokedUrlCommand *)command
+{
+    CDVPluginResult *pluginResult = nil;
+    NSString *value = [command.arguments objectAtIndex:0];
+    
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)bind:(CDVInvokedUrlCommand *)command
+{
+    CDVPluginResult *pluginResult = nil;
+    NSString *value = [command.arguments objectAtIndex:0];
+    
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)dispose
 {
     
