@@ -31,7 +31,7 @@
     <issue></issue>
 
     <js-module src="www/multicast.js" name="multicast">
-        <clobbers target="multicast" />
+        <clobbers target="cordova.plugins.multicast" />
     </js-module>
 
     <!-- android -->
