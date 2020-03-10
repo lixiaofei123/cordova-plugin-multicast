@@ -36,7 +36,7 @@ public class Multicast extends CordovaPlugin {
         }
 
         public void run() {
-            byte[] data = new byte[2048]; // investigate MSG_PEEK and MSG_TRUNC in java
+            byte[] data = new byte[20480]; // investigate MSG_PEEK and MSG_TRUNC in java
             DatagramPacket packet = new DatagramPacket(data, data.length);
             Log.d(TAG, "Starting loop!");
             while (true) {
