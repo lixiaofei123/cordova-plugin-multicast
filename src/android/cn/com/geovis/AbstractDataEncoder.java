@@ -1,21 +1,23 @@
 package cn.com.geovis;
 
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
 public abstract class AbstractDataEncoder implements IDataEncoder {
+	
+	private static final int HEADLENGTH = 17;
 	
 	@Override
 	public byte[] encode(String data) {
 		
 		byte[] payload = encode0(data);
 		
-		// 头部预留16个字节来放置消息ID和消息序列号等
-		ByteBuffer buffer = ByteBuffer.allocate(payload.length + 16 + 1);
-		{
-			// 暂时随便填充一些内容
-			buffer.putLong(1L);
-			buffer.putLong(1L);
-		}
+		String packageId = UUID.randomUUID().toString();
+		
+		// 头部预留{HEADLENGTH}个字节来放置消息ID和消息序列号等
+		// Header = packageId + msgType
+		ByteBuffer buffer = ByteBuffer.allocate(payload.length + HEADLENGTH);
+		buffer.put(ByteUtils.uuidToByte(packageId));
 		buffer.put((byte)messageType());
 		buffer.put(payload);
 		//TODO 尾部加入合法校验字符串，例如和指定字符串混合后进行MD5加密
@@ -32,8 +34,8 @@ public abstract class AbstractDataEncoder implements IDataEncoder {
 //		for(int i = 0; i < payload.length; i++){
 //			payload[i] = unCompressData[i + 17];
 //		}
-		ByteBuffer buffer = ByteBuffer.wrap(data, 17, data.length - 17);
-		byte[] payload = new byte[data.length - 17];
+		ByteBuffer buffer = ByteBuffer.wrap(data, HEADLENGTH, data.length - HEADLENGTH);
+		byte[] payload = new byte[data.length - HEADLENGTH];
 		buffer.get(payload);
 		return decode0(payload);
 	}

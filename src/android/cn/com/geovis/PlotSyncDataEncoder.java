@@ -1,6 +1,7 @@
 package cn.com.geovis;
 
 import java.nio.ByteBuffer;
+
 import org.json.JSONObject;
 
 public class PlotSyncDataEncoder extends AbstractDataEncoder {
@@ -16,10 +17,16 @@ public class PlotSyncDataEncoder extends AbstractDataEncoder {
 
 	@Override
 	public boolean canHandle(String data) {
-		JSONObject jsonData = new JSONObject(data);
-		String type = jsonData.getString("type");
-		String op = jsonData.getString("op");
-		return type.equals(JSTYPE) && op.equals(OP);
+
+		try {
+			JSONObject jsonData = new JSONObject(data);
+			String type = jsonData.getString("type");
+			String op = jsonData.getString("op");
+			return type.equals(JSTYPE) && op.equals(OP);
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
 	}
 
 	// type: "sync-icon",
@@ -36,27 +43,32 @@ public class PlotSyncDataEncoder extends AbstractDataEncoder {
 	@Override
 	protected byte[] encode0(String data) {
 
-		JSONObject jsonData = new JSONObject(data);
+		try {
+			JSONObject jsonData = new JSONObject(data);
 
-		long createTime = 0L;
-		if (jsonData.has("create_time")) {
-			createTime = jsonData.getLong("create_time");
+			long createTime = 0L;
+			if (jsonData.has("create_time")) {
+				createTime = jsonData.getLong("create_time");
+			}
+			short userId = (short) jsonData.getInt("author");
+			byte[] uuid = ByteUtils.uuidToByte(jsonData.getString("id"));
+			byte[] features = ByteUtils.stringToByte(jsonData.getJSONObject(
+					("features")).toString());
+			int len = features.length;
+
+			ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 16 + 4 + len);
+
+			buffer.putLong(createTime);
+			buffer.putShort(userId);
+			buffer.put(uuid);
+			buffer.putInt(len);
+			buffer.put(features);
+
+			return buffer.array();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
 		}
-		short userId = (short) jsonData.getInt("author");
-		byte[] uuid = ByteUtils.uuidToByte(jsonData.getString("id"));
-		byte[] features = ByteUtils
-				.stringToByte(jsonData.getJSONObject(("features")).toString());
-		int len = features.length;
 
-		ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 16 + 4 + len);
-
-		buffer.putLong(createTime);
-		buffer.putShort(userId);
-		buffer.put(uuid);
-		buffer.putInt(len);
-		buffer.put(features);
-
-		return buffer.array();
 	}
 
 	// type: "sync-icon",
@@ -73,29 +85,34 @@ public class PlotSyncDataEncoder extends AbstractDataEncoder {
 	@Override
 	protected String decode0(byte[] data) {
 
-		ByteBuffer buffer = ByteBuffer.wrap(data);
-		long createTime = buffer.getLong();
+		try {
+			ByteBuffer buffer = ByteBuffer.wrap(data);
+			long createTime = buffer.getLong();
 
-		int userID = buffer.getShort();
+			int userID = buffer.getShort();
 
-		byte[] uuidByte = new byte[16];
-		buffer.get(uuidByte);
-		String id = ByteUtils.byteToUuid(uuidByte);
+			byte[] uuidByte = new byte[16];
+			buffer.get(uuidByte);
+			String id = ByteUtils.byteToUuid(uuidByte);
 
-		int len = buffer.getInt();
-		byte[] dataByte = new byte[len];
-		buffer.get(dataByte);
-		String features = ByteUtils.byteToString(dataByte);
+			int len = buffer.getInt();
+			byte[] dataByte = new byte[len];
+			buffer.get(dataByte);
+			String features = ByteUtils.byteToString(dataByte);
 
-		JSONObject jsonData = new JSONObject();
-		jsonData.put("type", JSTYPE);
-		jsonData.put("op", OP);
-		jsonData.put("create_time", createTime);
-		jsonData.put("author", userID);
-		jsonData.put("id", id);
-		jsonData.put("features", new JSONObject(features));
+			JSONObject jsonData = new JSONObject();
+			jsonData.put("type", JSTYPE);
+			jsonData.put("op", OP);
+			jsonData.put("create_time", createTime);
+			jsonData.put("author", userID);
+			jsonData.put("id", id);
+			jsonData.put("features", new JSONObject(features));
 
-		return jsonData.toString();
+			return jsonData.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
 	}
 
 	public static void main(String[] args) {

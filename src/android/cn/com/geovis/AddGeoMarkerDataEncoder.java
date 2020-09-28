@@ -4,6 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import org.json.JSONObject;
 
 public class AddGeoMarkerDataEncoder extends AbstractDataEncoder {
@@ -24,84 +26,100 @@ public class AddGeoMarkerDataEncoder extends AbstractDataEncoder {
 
 	@Override
 	public boolean canHandle(String data) {
-		JSONObject jsonData = new JSONObject(data);
-		String type = jsonData.getString("type");
-		String op = jsonData.getString("op");
-		return type.equals("sync-geo") && op.equals("add");
+		try {
+			JSONObject jsonData = new JSONObject(data);
+			String type = jsonData.getString("type");
+			String op = jsonData.getString("op");
+			return type.equals("sync-geo") && op.equals("add");
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
 	}
 
 	@Override
 	protected byte[] encode0(String data) {
 
-		JSONObject jsonData = new JSONObject(data);
-		short userId = (short) jsonData.getInt("author");
-		long sendTime = 0L;
-		if (jsonData.has("sendTime")) {
-			sendTime = jsonData.getLong("sendTime");
+		try {
+			JSONObject jsonData = new JSONObject(data);
+			short userId = (short) jsonData.getInt("author");
+			long sendTime = 0L;
+			if (jsonData.has("sendTime")) {
+				sendTime = jsonData.getLong("sendTime");
+			}
+
+			String id = jsonData.getString("id");
+			String classplot = jsonData.getString("classplot");
+
+			String features = jsonData.getJSONObject("features").toString();
+			byte[] featuresBytes = ByteUtils.stringToByte(features);
+			int featuresBytesLength = featuresBytes.length;
+
+			ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 16 + 1 + 4
+					+ featuresBytesLength);
+			buffer.putLong(sendTime);
+			buffer.putShort(userId);
+			buffer.put(ByteUtils.uuidToByte(id));
+			buffer.put(classplotMap.getOrDefault(classplot, (byte) 0)
+					.byteValue());
+			buffer.putInt(featuresBytesLength);
+			buffer.put(featuresBytes);
+
+			return buffer.array();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
 		}
 
-		String id = jsonData.getString("id");
-		String classplot = jsonData.getString("classplot");
-
-		String features = jsonData.getJSONObject("features").toString();
-		byte[] featuresBytes = ByteUtils.stringToByte(features);
-		int featuresBytesLength = featuresBytes.length;
-
-		ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 16 + 1 + 4
-				+ featuresBytesLength);
-		buffer.putLong(sendTime);
-		buffer.putShort(userId);
-		buffer.put(ByteUtils.uuidToByte(id));
-		buffer.put(classplotMap.getOrDefault(classplot, (byte) 0).byteValue());
-		buffer.putInt(featuresBytesLength);
-		buffer.put(featuresBytes);
-
-		return buffer.array();
 	}
 
 	@Override
 	protected String decode0(byte[] data) {
 
-		ByteBuffer buffer = ByteBuffer.wrap(data);
+		try {
+			ByteBuffer buffer = ByteBuffer.wrap(data);
 
-		long sendTime = buffer.getLong();
-		int userId = buffer.getShort();
+			long sendTime = buffer.getLong();
+			int userId = buffer.getShort();
 
-		byte[] uuidbytes = new byte[16];
-		buffer.get(uuidbytes);
-		String id = ByteUtils.byteToUuid(uuidbytes);
+			byte[] uuidbytes = new byte[16];
+			buffer.get(uuidbytes);
+			String id = ByteUtils.byteToUuid(uuidbytes);
 
-		byte classplotNum = buffer.get();
-		String classplot = "unknown";
-		for (String key : classplotMap.keySet()) {
-			if (classplotMap.get(key).byteValue() == classplotNum) {
-				classplot = key;
-				break;
+			byte classplotNum = buffer.get();
+			String classplot = "unknown";
+			for (String key : classplotMap.keySet()) {
+				if (classplotMap.get(key).byteValue() == classplotNum) {
+					classplot = key;
+					break;
+				}
 			}
+
+			int featuresBytesLength = buffer.getInt();
+			byte[] dataByte = new byte[featuresBytesLength];
+			buffer.get(dataByte);
+			String features = ByteUtils.byteToString(dataByte);
+
+			// type: "sync-geo",
+			// op: "add",
+			// features: flagfeature,
+			// id: r,
+			// classplot: "flag",
+			// author: this.me,
+
+			JSONObject jsonData = new JSONObject();
+			jsonData.put("type", "sync-geo");
+			jsonData.put("op", "add");
+			jsonData.put("id", id);
+			jsonData.put("sendTime", sendTime);
+			jsonData.put("classplot", classplot);
+			jsonData.put("author", userId);
+			jsonData.put("features", new JSONObject(features));
+
+			return jsonData.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
 		}
 
-		int featuresBytesLength = buffer.getInt();
-		byte[] dataByte = new byte[featuresBytesLength];
-		buffer.get(dataByte);
-		String features = ByteUtils.byteToString(dataByte);
-
-		// type: "sync-geo",
-		// op: "add",
-		// features: flagfeature,
-		// id: r,
-		// classplot: "flag",
-		// author: this.me,
-
-		JSONObject jsonData = new JSONObject();
-		jsonData.put("type", "sync-geo");
-		jsonData.put("op", "add");
-		jsonData.put("id", id);
-		jsonData.put("sendTime", sendTime);
-		jsonData.put("classplot", classplot);
-		jsonData.put("author", userId);
-		jsonData.put("features", new JSONObject(features));
-
-		return jsonData.toString();
 	}
 
 	public static void main(String[] args) {

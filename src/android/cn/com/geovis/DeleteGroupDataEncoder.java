@@ -15,54 +15,70 @@ public class DeleteGroupDataEncoder extends AbstractDataEncoder {
 
 	@Override
 	public boolean canHandle(String data) {
-		JSONObject jsonData = new JSONObject(data);
-		String type = jsonData.getString("type");
-		return type.equals("delete-Group");
+
+		try {
+			JSONObject jsonData = new JSONObject(data);
+			String type = jsonData.getString("type");
+			return type.equals("delete-Group");
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
 	}
 
 	@Override
 	protected byte[] encode0(String data) {
 
-		JSONObject jsonData = new JSONObject(data);
-		String groupId = jsonData.getString("id");
-		long sendTime = 0L;
-		if (jsonData.has("sendTime")) {
-			sendTime = jsonData.getLong("sendTime");
-		}
-		short sender = (short) jsonData.getInt("author");
-		ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 16);
-		buffer.putLong(sendTime);
-		buffer.putShort(sender);
-		buffer.put(ByteUtils.uuidToByte(groupId));
+		try {
+			JSONObject jsonData = new JSONObject(data);
+			String groupId = jsonData.getString("id");
+			long sendTime = 0L;
+			if (jsonData.has("sendTime")) {
+				sendTime = jsonData.getLong("sendTime");
+			}
+			short sender = (short) jsonData.getInt("author");
+			ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 16);
+			buffer.putLong(sendTime);
+			buffer.putShort(sender);
+			buffer.put(ByteUtils.uuidToByte(groupId));
 
-		return buffer.array();
+			return buffer.array();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
 	}
 
 	@Override
 	protected String decode0(byte[] data) {
 
-		ByteBuffer buffer = ByteBuffer.wrap(data);
+		try {
+			ByteBuffer buffer = ByteBuffer.wrap(data);
 
-		long sendTime = buffer.getLong();
-		int userId = buffer.getShort();
+			long sendTime = buffer.getLong();
+			int userId = buffer.getShort();
 
-		byte[] uuidbytes = new byte[16];
-		buffer.get(uuidbytes);
-		String groupId = ByteUtils.byteToUuid(uuidbytes);
+			byte[] uuidbytes = new byte[16];
+			buffer.get(uuidbytes);
+			String groupId = ByteUtils.byteToUuid(uuidbytes);
 
-		// {
-		// type: "delete-Group",
-		// id: gid,
-		// author: this.myInfo.name,
-		// }
+			// {
+			// type: "delete-Group",
+			// id: gid,
+			// author: this.myInfo.name,
+			// }
 
-		JSONObject jsonData = new JSONObject();
-		jsonData.put("type", "delete-Group");
-		jsonData.put("id", groupId);
-		jsonData.put("author", userId);
-		jsonData.put("sendTime", sendTime);
+			JSONObject jsonData = new JSONObject();
+			jsonData.put("type", "delete-Group");
+			jsonData.put("id", groupId);
+			jsonData.put("author", userId);
+			jsonData.put("sendTime", sendTime);
 
-		return jsonData.toString();
+			return jsonData.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
 	}
 
 	public static void main(String[] args) {
