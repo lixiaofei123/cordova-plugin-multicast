@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.SparseArray;
 
 import cn.com.geovis.DataEncoder;
+import cn.com.geovis.IDataEncoder;
 
 public class Multicast extends CordovaPlugin {
     private static final String TAG = Multicast.class.getSimpleName();
@@ -127,9 +128,9 @@ public class Multicast extends CordovaPlugin {
             int port = data.getInt(3);
 
             try {
-                byte[] data = dataEncoder.encode(message);
+                byte[] encodeData = dataEncoder.encode(message);
                 Log.d(TAG, "send msg :" + message);
-                DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(address), port);
+                DatagramPacket packet = new DatagramPacket(encodeData, encodeData.length, InetAddress.getByName(address), port);
                 socket.send(packet);
                 callbackContext.success(message);
             } catch (IOException ioe) {
