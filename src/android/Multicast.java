@@ -15,15 +15,20 @@ import org.json.JSONException;
 import android.util.Log;
 import android.util.SparseArray;
 
+import cn.com.geovis.DataEncoder;
+
 public class Multicast extends CordovaPlugin {
     private static final String TAG = Multicast.class.getSimpleName();
 
     SparseArray<DatagramSocket> m_sockets;
     SparseArray<SocketListener> m_listeners;
 
+    private IDataEncoder dataEncoder;
+
     public Multicast() {
         m_sockets = new SparseArray<DatagramSocket>();
         m_listeners = new SparseArray<SocketListener>();
+        dataEncoder = new DataEncoder();
     }
 
     private class SocketListener extends Thread {
@@ -43,10 +48,12 @@ public class Multicast extends CordovaPlugin {
                 try {
                     Log.d(TAG, "Waitin for packet!");
                     this.m_socket.receive(packet);
-                    String msg = new String(data, 0, packet.getLength(), "UTF-8")
-                                    .replace("'", "\'")
-                                    .replace("\r", "\\r")
-                                    .replace("\n", "\\n");
+                    // String msg = new String(data, 0, packet.getLength(), "UTF-8")
+                    //                 .replace("'", "\'")
+                    //                 .replace("\r", "\\r")
+                    //                 .replace("\n", "\\n");
+                    String msg = dataEncoder.decode(data);
+                    Log.d(TAG, "Receive msg :" + msg);
                     String address = packet.getAddress().getHostAddress();
                     int port = packet.getPort();
 
@@ -120,7 +127,8 @@ public class Multicast extends CordovaPlugin {
             int port = data.getInt(3);
 
             try {
-                byte[] bytes = message.getBytes("UTF-8");
+                byte[] data = dataEncoder.encode(message);
+                Log.d(TAG, "send msg :" + message);
                 DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(address), port);
                 socket.send(packet);
                 callbackContext.success(message);

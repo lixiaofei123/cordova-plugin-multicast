@@ -18,11 +18,7 @@
   under the License.
 -->
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:rim="http://www.blackberry.com/ns/widgets"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="org.jarvus.cordova.multicast"
-    version="0.0.1-dev">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:rim="http://www.blackberry.com/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" id="org.jarvus.cordova.multicast" version="0.0.1-dev">
     <name>Multicast</name>
     <description>Cordova Multicast Plugin</description>
     <license>Apache 2.0</license>
@@ -37,12 +33,34 @@
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Multicast" >
-                <param name="android-package" value="org.jarvus.cordova.multicast.Multicast"/>
+            <feature name="Multicast">
+                <param name="android-package" value="org.jarvus.cordova.multicast.Multicast" />
             </feature>
         </config-file>
 
         <source-file src="src/android/Multicast.java" target-dir="src/org/jarvus/cordova/multicast" />
+        <source-file src="src/android/cn/com/geovis/AbstractDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/AddGeoMarkerDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/AddGroupDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/AddPlotDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/ByteUtils.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/Compress.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/DataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/DeleteGeoMarkerDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/DeleteGroupDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/DeletePlotDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/HeartbeatDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/ICompress.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/IDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/PlaneSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/PlotSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/SingleChatTextDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/TaskPersonSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/TaskSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/TaskTeamSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/TaskTimeSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/UpdateGroupDataEncoder.java" target-dir="src/cn/com/geovis/" />
+
     </platform>
 
 </plugin>

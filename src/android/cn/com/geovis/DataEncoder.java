@@ -1,0 +1,89 @@
+package cn.com.geovis;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DataEncoder implements IDataEncoder {
+	
+	private static final List<IDataEncoder> encoders = new ArrayList<IDataEncoder>();
+	
+	private final static ICompress compress = new Compress();
+
+	
+	public DataEncoder() {
+		encoders.add(new SingleChatTextDataEncoder());
+		encoders.add(new HeartbeatDataEncoder());
+		encoders.add(new AddGroupDataEncoder());
+		encoders.add(new DeleteGroupDataEncoder());
+		encoders.add(new PlotSyncDataEncoder());
+		encoders.add(new TaskSyncDataEncoder());
+		encoders.add(new TaskTimeSyncDataEncoder());
+		encoders.add(new PlaneSyncDataEncoder());
+		encoders.add(new TaskPersonSyncDataEncoder());
+		encoders.add(new TaskTeamSyncDataEncoder());
+		encoders.add(new AddGeoMarkerDataEncoder());
+		encoders.add(new DeleteGeoMarkerDataEncoder());
+		encoders.add(new AddPlotDataEncoder());
+		encoders.add(new DeletePlotDataEncoder());
+	}
+	
+
+	@Override
+	public byte[] encode(String data) {
+		byte[] encodeData = null;
+		for(IDataEncoder encoder : encoders){
+			try{
+				if(encoder.canHandle(data)){
+					encodeData = encoder.encode(data);
+					break;
+				}
+			}catch(Exception e){
+				// nothing to do
+			}
+		}
+		
+		// 不支持的话就直接转换为byte数组
+		if(encodeData == null){
+			System.out.println("未发现有效编码程序!!!!");
+			try {
+				encodeData =  data.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				encodeData = data.getBytes();
+			}
+		}
+		
+		return compress.compress(encodeData);
+	}
+
+	@Override
+	public String decode(byte[] data) {
+		byte[] unCompressData = compress.unCompress(data);
+		for(IDataEncoder encoder : encoders){
+			if(unCompressData[16] == encoder.messageType()){
+				return encoder.decode(unCompressData);
+			}
+		}
+		System.out.println("未发现有效解码程序!!!!");
+		try {
+			return new String(unCompressData,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return new String(unCompressData);
+		}
+		
+	}
+
+	@Override
+	public byte messageType() {
+		return 0;
+	}
+
+	@Override
+	public boolean canHandle(String data) {
+		return false;
+	}
+	
+
+}
