@@ -3,9 +3,6 @@ package cn.com.geovis;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.management.RuntimeErrorException;
-
 import org.json.JSONObject;
 
 public class AddGeoMarkerDataEncoder extends AbstractDataEncoder {
