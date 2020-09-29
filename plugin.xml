@@ -18,7 +18,7 @@
   under the License.
 -->
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:rim="http://www.blackberry.com/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" id="org.jarvus.cordova.multicast" version="0.0.3">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:rim="http://www.blackberry.com/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" id="org.jarvus.cordova.multicast" version="0.0.4">
     <name>Multicast</name>
     <description>Cordova Multicast Plugin</description>
     <license>Apache 2.0</license>
@@ -74,6 +74,7 @@
         <source-file src="src/android/cn/com/geovis/TaskSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/TaskTeamSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/TaskTimeSyncDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/UnSupportDataEncoder.java" target-dir="src/cn/com/geovis/" />
 
 
     </platform>

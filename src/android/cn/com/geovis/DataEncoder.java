@@ -9,6 +9,8 @@ public class DataEncoder implements IDataEncoder {
 	private static final List<IDataEncoder> encoders = new ArrayList<IDataEncoder>();
 	
 	private final static ICompress compress = new Compress();
+	
+	private UnSupportDataEncoder unSupportDataEncoder;
 
 	
 	public DataEncoder() {
@@ -46,6 +48,9 @@ public class DataEncoder implements IDataEncoder {
 		encoders.add(new DroneRequireChangeDataEncoder());
 		encoders.add(new DroneAgreeChangeMasterDataEncoder());
 		encoders.add(new DroneDisagreeChangeMasterDataEncoder());
+	
+		unSupportDataEncoder = new UnSupportDataEncoder();
+		encoders.add(unSupportDataEncoder);
 	}
 	
 
@@ -63,15 +68,10 @@ public class DataEncoder implements IDataEncoder {
 			}
 		}
 		
+		System.out.println("未发现有效编码程序!!!!");
 		// 不支持的话就直接转换为byte数组
 		if(encodeData == null){
-			System.out.println("未发现有效编码程序!!!!");
-			try {
-				encodeData =  data.getBytes("UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				encodeData = data.getBytes();
-			}
+			encodeData = unSupportDataEncoder.encode(data);
 		}
 		
 		return compress.compress(encodeData);
@@ -85,14 +85,7 @@ public class DataEncoder implements IDataEncoder {
 				return encoder.decode(unCompressData);
 			}
 		}
-		System.out.println("未发现有效解码程序!!!!");
-		try {
-			return new String(unCompressData,"UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return new String(unCompressData);
-		}
-		
+		return "";
 	}
 
 	@Override
