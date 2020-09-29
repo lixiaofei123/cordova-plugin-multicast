@@ -1,89 +1,25 @@
 package cn.com.geovis;
 
-import java.nio.ByteBuffer;
 
-import org.json.JSONObject;
-
-public class SingleChatImageDataEncoder extends AbstractDataEncoder {
+public class SingleChatImageDataEncoder extends AbstractSingleChatDataEncoder {
 	
   public static final byte MESSAGE_TYPE = 3;
-
+  
   @Override
-  public byte messageType() {
-    return MESSAGE_TYPE;
+  protected byte messageType0() {
+  	return MESSAGE_TYPE;
   }
 
   @Override
-  protected byte[] encode0(String data) {
-    try {
-      JSONObject jsonData = new JSONObject(data);
-      String msgId = jsonData.getString("id");
-      JSONObject  dataObj =  jsonData.getJSONObject("data");
-      long sendTime = jsonData.getLong("sendTime");
-      short userId = (short) jsonData.getInt("sender");
-
-      String msgContent = dataObj.getString("data");
-      byte[] msgContentBytes = ByteUtils.stringToByte(msgContent);
-      ByteBuffer buffer = ByteBuffer.allocate(
-        8 + 2 + 16 + 4 + msgContentBytes.length
-      );
-      buffer.putLong(sendTime);
-      buffer.putShort(userId);
-      buffer.put(ByteUtils.uuidToByte(msgId));
-      buffer.putInt(msgContentBytes.length);
-      buffer.put(msgContentBytes);
-
-      return buffer.array();
-    } catch (Exception e) {
-      throw new RuntimeException(e.getMessage());
-    }
+  protected String dataProperty() {
+  	return "data";
   }
 
   @Override
-  protected String decode0(byte[] data) {
-    try {
-      ByteBuffer buffer = ByteBuffer.wrap(data);
-      long sendTime = buffer.getLong();
-      int userId = buffer.getShort();
-
-      byte[] uuidbytes = new byte[16];
-      buffer.get(uuidbytes);
-      String msgId = ByteUtils.byteToUuid(uuidbytes);
-
-      int contentLength = buffer.getInt();
-      byte[] contentBytes = new byte[contentLength];
-      buffer.get(contentBytes);
-      String content = ByteUtils.byteToString(contentBytes);
-
-      JSONObject jsonData = new JSONObject();
-      jsonData.put("id", msgId);
-      jsonData.put("type", "chat");
-      jsonData.put("subType", "picture");
-      jsonData.put("sender", userId);
-      jsonData.put("sendTime", sendTime);
-      
-      JSONObject  dataObj = new JSONObject();
-      dataObj.put("data", content);
-      jsonData.put("data", dataObj);
-
-      return jsonData.toString();
-    } catch (Exception e) {
-      throw new RuntimeException(e.getMessage());
-    }
+  protected String subtype() {
+  	return "picture";
   }
-
-  @Override
-  public boolean canHandle(String data) {
-    try {
-      JSONObject jsonData = new JSONObject(data);
-      String type = jsonData.getString("type");
-      String subType = jsonData.getString("subType");
-
-      return type.equals("chat") && subType.equals("picture");
-    } catch (Exception e) {
-      throw new RuntimeException(e.getMessage());
-    }
-  }
+  
   
   public static void main(String[] args) {
 
@@ -97,5 +33,7 @@ public class SingleChatImageDataEncoder extends AbstractDataEncoder {
 		String smsg = data.decode(datas);
 		System.out.println("数据还原:" + smsg);
 	}
+
+
 
 }

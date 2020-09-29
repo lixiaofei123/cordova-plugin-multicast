@@ -1,8 +1,8 @@
 package cn.com.geovis;
 
-public class SingleChatTextDataEncoder extends AbstractSingleChatDataEncoder {
+public class GroupChatTextDataEncoder extends AbstractGroupChatDataEncoder {
 	
-	public static final byte MESSAGE_TYPE = 1;
+	public static final byte MESSAGE_TYPE = 8;
 
 	@Override
 	protected byte messageType0() {
@@ -22,7 +22,7 @@ public class SingleChatTextDataEncoder extends AbstractSingleChatDataEncoder {
 
 	public static void main(String[] args) {
 
-		String msg = "{id:'dad44267-91b7-4c4d-a640-5cf5a48c0924',type:'chat',subType:'text',receiver:123,sender:456,sendTime:1601347381497,data:{text:'hello'}}";
+		String msg = "{id:'dad44267-91b7-4c4d-a640-5cf5a48c0924',type:'groupchat',subType:'text',receiver:123,sender:456,sendTime:1601347381497,data:{text:'hello'}}";
 		System.out.println("编码后的数据长度是" + ByteUtils.stringToByte(msg).length);
 
 		DataEncoder data = new DataEncoder();

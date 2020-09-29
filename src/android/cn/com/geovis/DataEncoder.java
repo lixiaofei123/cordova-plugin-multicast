@@ -20,6 +20,11 @@ public class DataEncoder implements IDataEncoder {
 		encoders.add(new SingleChatAudioDataEncoder());
 		encoders.add(new SingleChatVideoDataEncoder());
 		
+		encoders.add(new GroupChatTextDataEncoder());
+		encoders.add(new GroupChatImageDataEncoder());
+		encoders.add(new GroupChatAudioDataEncoder());
+		encoders.add(new GroupChatVideoDataEncoder());
+		
 		
 		encoders.add(new GroupAddDataEncoder());
 		encoders.add(new GroupDeleteDataEncoder());

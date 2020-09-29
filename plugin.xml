@@ -39,7 +39,10 @@
         </config-file>
 
         <source-file src="src/android/Multicast.java" target-dir="src/org/jarvus/cordova/multicast" />
+        <source-file src="src/android/cn/com/geovis/AbstractChatDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/AbstractDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/AbstractGroupChatDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/AbstractSingleChatDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/ByteUtils.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/Compress.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/DataEncoder.java" target-dir="src/cn/com/geovis/" />
@@ -50,6 +53,10 @@
         <source-file src="src/android/cn/com/geovis/GeoMarkerAddDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/GeoMarkerDeleteDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/GroupAddDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/GroupChatAudioDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/GroupChatImageDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/GroupChatTextDataEncoder.java" target-dir="src/cn/com/geovis/" />
+        <source-file src="src/android/cn/com/geovis/GroupChatVideoDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/GroupDeleteDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/GroupUpdateDataEncoder.java" target-dir="src/cn/com/geovis/" />
         <source-file src="src/android/cn/com/geovis/HeartbeatDataEncoder.java" target-dir="src/cn/com/geovis/" />
