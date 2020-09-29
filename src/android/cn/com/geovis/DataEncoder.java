@@ -12,20 +12,35 @@ public class DataEncoder implements IDataEncoder {
 
 	
 	public DataEncoder() {
-		encoders.add(new SingleChatTextDataEncoder());
+		
 		encoders.add(new HeartbeatDataEncoder());
-		encoders.add(new AddGroupDataEncoder());
-		encoders.add(new DeleteGroupDataEncoder());
-		encoders.add(new PlotSyncDataEncoder());
+		
+		encoders.add(new SingleChatTextDataEncoder());
+		encoders.add(new SingleChatImageDataEncoder());
+		encoders.add(new SingleChatAudioDataEncoder());
+		encoders.add(new SingleChatVideoDataEncoder());
+		
+		
+		encoders.add(new GroupAddDataEncoder());
+		encoders.add(new GroupDeleteDataEncoder());
+		
+		
 		encoders.add(new TaskSyncDataEncoder());
 		encoders.add(new TaskTimeSyncDataEncoder());
-		encoders.add(new PlaneSyncDataEncoder());
 		encoders.add(new TaskPersonSyncDataEncoder());
 		encoders.add(new TaskTeamSyncDataEncoder());
-		encoders.add(new AddGeoMarkerDataEncoder());
-		encoders.add(new DeleteGeoMarkerDataEncoder());
-		encoders.add(new AddPlotDataEncoder());
-		encoders.add(new DeletePlotDataEncoder());
+		
+		encoders.add(new GeoMarkerAddDataEncoder());
+		encoders.add(new GeoMarkerDeleteDataEncoder());
+		
+		encoders.add(new PlotSyncDataEncoder());
+		encoders.add(new PlotAddDataEncoder());
+		encoders.add(new PlotDeleteDataEncoder());
+		
+		encoders.add(new DroneSyncDataEncoder());
+		encoders.add(new DroneRequireChangeDataEncoder());
+		encoders.add(new DroneAgreeChangeMasterDataEncoder());
+		encoders.add(new DroneDisagreeChangeMasterDataEncoder());
 	}
 	
 

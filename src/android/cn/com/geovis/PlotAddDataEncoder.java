@@ -4,22 +4,25 @@ import java.nio.ByteBuffer;
 
 import org.json.JSONObject;
 
-public class DeletePlotDataEncoder extends AbstractDataEncoder {
+public class PlotAddDataEncoder extends AbstractDataEncoder {
 
 	// type: "sync-icon",
-	// op: "delete",
-	public final static byte MESSAGE_TYPE = 26;
+	// op: "add",
+
+	public final static byte MESSAGE_TYPE = 25;
 	public final static String JSTYPE = "sync-icon";
-	public final static String OP = "delete";
+	public final static String OP = "add";
 
 	@Override
 	public byte messageType() {
 		return MESSAGE_TYPE;
 	}
 
-	// id: iconid,
-	// rendermode: "2d",
-	// operator: this.me,
+	// features: [newdata], // should be string
+	// id: id,
+	// rendermode: '3d',
+	// author: this.me,
+	// isdelete: false,
 
 	@Override
 	public boolean canHandle(String data) {
@@ -47,16 +50,21 @@ public class DeletePlotDataEncoder extends AbstractDataEncoder {
 			}
 
 			byte[] uuid = ByteUtils.uuidToByte(jsonData.getString("id"));
-			short userId = (short) jsonData.getInt("operator");
+			short userId = (short) jsonData.getInt("author");
+			byte[] dataByte = ByteUtils.stringToByte(jsonData.getJSONObject(
+					"features").toString());
 
-			int len = uuid.length;
+			int uuidLen = uuid.length;
+			int dataLen = dataByte.length;
 
-			ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 4 + len);
+			ByteBuffer buffer = ByteBuffer.allocate(8 + 2 + 4 + uuidLen
+					+ dataLen);
 
 			buffer.putLong(createTime);
 			buffer.putShort(userId);
-			buffer.putInt(len);
+			buffer.putInt(uuidLen + dataLen);
 			buffer.put(uuid);
+			buffer.put(dataByte);
 
 			return buffer.array();
 		} catch (Exception e) {
@@ -65,31 +73,35 @@ public class DeletePlotDataEncoder extends AbstractDataEncoder {
 
 	}
 
-	// type: "sync-icon",
-	// op: "delete",
-	// id: iconid,
-	// rendermode: "2d",
-	// operator: this.me,
+	// features: [newdata],
+	// id: id,
+	// rendermode: '3d',
+	// author: this.me,
+	// isdelete: false,
 
 	@Override
 	protected String decode0(byte[] data) {
 
 		try {
 			ByteBuffer buffer = ByteBuffer.wrap(data);
-			long createTime = buffer.getLong();
 
+			long createTime = buffer.getLong();
 			int userID = buffer.getShort();
 			int len = buffer.getInt();
-			byte[] dataByte = new byte[len];
+			byte[] uuidByte = new byte[16];
+			buffer.get(uuidByte);
+			String uuidStr = ByteUtils.byteToUuid(uuidByte);
+			byte[] dataByte = new byte[len - 16];
 			buffer.get(dataByte);
-			String uuid = ByteUtils.byteToUuid(dataByte);
+			String dataStr = ByteUtils.byteToString(dataByte);
 
 			JSONObject jsonData = new JSONObject();
 			jsonData.put("type", JSTYPE);
 			jsonData.put("op", OP);
 			jsonData.put("create_time", createTime);
-			jsonData.put("id", uuid);
-			jsonData.put("operator", userID);
+			jsonData.put("id", uuidStr);
+			jsonData.put("features", new JSONObject(dataStr));
+			jsonData.put("author", userID);
 
 			return jsonData.toString();
 		} catch (Exception e) {
@@ -100,13 +112,16 @@ public class DeletePlotDataEncoder extends AbstractDataEncoder {
 
 	public static void main(String[] args) {
 
-		// type: "sync-icon",
-		// op: "delete",
-		// id: iconid,
-		// rendermode: "2d",
-		// operator: this.me,
+		// type: 'sync-icon',
+		// op: 'add',
+		// rendermode: '2d',
+		// features: [item], // TODO: whisperchi
+		// id: item.properties.pid,
+		// createtime: time,
+		// author: this.me,
+		// isdelete: false,
 
-		String msg = "{id:'dad44267-91b7-4c4d-a640-5cf5a48c0924',operator:145,type:'sync-icon',op:'delete',create_time:1601204563066}";
+		String msg = "{id:'dad44267-91b7-4c4d-a640-5cf5a48c0924',features:{name:'lixiaofei'},author:125,type:'sync-icon',op:'add',create_time:1601204563066}";
 		System.out.println("编码后的数据长度是" + ByteUtils.stringToByte(msg).length);
 
 		DataEncoder data = new DataEncoder();

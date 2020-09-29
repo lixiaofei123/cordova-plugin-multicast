@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PlaneSyncDataEncoder extends AbstractDataEncoder {
+public class DroneSyncDataEncoder extends AbstractDataEncoder {
 
 	public final static byte MESSAGE_TYPE = 21;
 

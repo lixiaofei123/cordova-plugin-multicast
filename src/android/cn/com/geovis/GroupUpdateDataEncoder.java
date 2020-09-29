@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class UpdateGroupDataEncoder extends AbstractDataEncoder {
+public class GroupUpdateDataEncoder extends AbstractDataEncoder {
   public static final byte MESSAGE_TYPE = 20;
 
   @Override

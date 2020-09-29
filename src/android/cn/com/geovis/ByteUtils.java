@@ -49,8 +49,6 @@ public class ByteUtils {
 	    return buffer.getShort();
 	}
 	
-	
-	
     public static byte[] uuidToByte(String uuidString) {
     	UUID uuid = UUID.fromString(uuidString);
         ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
