@@ -54,6 +54,9 @@ public class Multicast extends CordovaPlugin {
                     //                 .replace("\r", "\\r")
                     //                 .replace("\n", "\\n");
                     String msg = dataEncoder.decode(data);
+                    msg = msg.replace("'", "\'")
+                                     .replace("\r", "\\r")
+                                     .replace("\n", "\\n");
                     Log.d(TAG, "Receive msg :" + msg);
                     String address = packet.getAddress().getHostAddress();
                     int port = packet.getPort();
