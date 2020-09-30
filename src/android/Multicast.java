@@ -7,6 +7,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
@@ -94,8 +98,16 @@ public class Multicast extends CordovaPlugin {
         } else if (action.equals("bind")) {
             final int port = data.getInt(1);
             try {
-                socket.bind(new InetSocketAddress(port));
-
+                String interfaceName = data.getString(2);
+                Log.d(TAG, "the interfaceName is " + interfaceName);
+                String hostAddress = findNetworkInterfaceByName(interfaceName);
+                if(hostAddress != null){
+                    Log.d(TAG, "will bind " + hostAddress);
+                    socket.bind(new InetSocketAddress(hostAddress,port));
+                }else{
+                    Log.d(TAG, "not query valid ip address");
+                    socket.bind(new InetSocketAddress(port));
+                }
                 SocketListener listener = new SocketListener(id, socket);
                 m_listeners.put(id, listener);
                 listener.start();
@@ -157,5 +169,29 @@ public class Multicast extends CordovaPlugin {
 
         return true;
     }
+
+
+    
+	public String findNetworkInterfaceByName(String name) throws SocketException{
+		for (Enumeration<NetworkInterface> en =
+	              NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+
+	            NetworkInterface intf = en.nextElement();
+	            String networkName =  intf.getName();
+	            if(networkName.equals(name))
+	            {
+	            	for (Enumeration<InetAddress> enumIpAddr =
+		                     intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+	            		
+	            		InetAddress inetAddress = enumIpAddr.nextElement();
+	            		 if (inetAddress instanceof Inet4Address) {
+	            		     return inetAddress.getHostAddress();
+	            		 }
+		            }
+	            	break;
+	            }
+	        }
+		return null;
+	}
 }
 

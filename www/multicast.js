@@ -17,9 +17,9 @@ Socket.prototype.on = function (event, callback) {
     this._eventHandlers[event] = callback;
 };
 
-Socket.prototype.bind = function (port, callback) {
+Socket.prototype.bind = function (port,interfaceName, callback) {
     callback = callback || function () { };
-    exec(callback.bind(null, null), callback.bind(null), 'Multicast', 'bind', [ this._socketId, port ]);
+    exec(callback.bind(null, null), callback.bind(null), 'Multicast', 'bind', [ this._socketId, port,interfaceName ]);
 };
 
 Socket.prototype.close = function () {
