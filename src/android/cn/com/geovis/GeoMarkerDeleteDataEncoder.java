@@ -92,7 +92,7 @@ public class GeoMarkerDeleteDataEncoder extends AbstractDataEncoder {
 			jsonData.put("id", id);
 			jsonData.put("sendTime", sendTime);
 			jsonData.put("classplot", classplot);
-			jsonData.put("operator", userId);
+			jsonData.put("operator", userId + "");
 
 			return jsonData.toString();
 		} catch (Exception e) {

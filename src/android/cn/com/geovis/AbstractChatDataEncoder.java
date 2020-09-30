@@ -64,7 +64,7 @@ public abstract class AbstractChatDataEncoder extends AbstractDataEncoder {
 			jsonData.put("id", msgId);
 			jsonData.put("type", type());
 			jsonData.put("subType", subtype());
-			jsonData.put("sender", userId);
+			jsonData.put("sender", userId +"");
 			jsonData.put("sendTime", sendTime);
 
 			JSONObject dataObj = new JSONObject();

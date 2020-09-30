@@ -85,7 +85,14 @@ public class DataEncoder implements IDataEncoder {
 				return encoder.decode(unCompressData);
 			}
 		}
-		return "";
+		System.out.println("未发现有效解码程序!!!!");
+		try {
+			return new String(unCompressData,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return new String(unCompressData);
+		}
+		
 	}
 
 	@Override

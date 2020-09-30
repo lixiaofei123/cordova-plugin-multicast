@@ -48,7 +48,7 @@ public class DroneRequireChangeDataEncoder extends AbstractDataEncoder {
 			int newMaster = buffer.getShort();
 			JSONObject jsonData = new JSONObject();
 			jsonData.put("type", "requireChange");
-			jsonData.put("newMaster", newMaster);
+			jsonData.put("newMaster", newMaster +"");
 
 			return jsonData.toString();
 		} catch (Exception e) {

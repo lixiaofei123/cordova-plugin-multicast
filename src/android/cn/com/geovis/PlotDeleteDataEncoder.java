@@ -89,7 +89,7 @@ public class PlotDeleteDataEncoder extends AbstractDataEncoder {
 			jsonData.put("op", OP);
 			jsonData.put("create_time", createTime);
 			jsonData.put("id", uuid);
-			jsonData.put("operator", userID);
+			jsonData.put("operator", userID + "");
 
 			return jsonData.toString();
 		} catch (Exception e) {

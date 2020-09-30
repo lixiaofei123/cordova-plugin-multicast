@@ -101,7 +101,7 @@ public class PlotAddDataEncoder extends AbstractDataEncoder {
 			jsonData.put("create_time", createTime);
 			jsonData.put("id", uuidStr);
 			jsonData.put("features", new JSONObject(dataStr));
-			jsonData.put("author", userID);
+			jsonData.put("author", userID + "");
 
 			return jsonData.toString();
 		} catch (Exception e) {

@@ -104,7 +104,7 @@ public class PlotSyncDataEncoder extends AbstractDataEncoder {
 			jsonData.put("type", JSTYPE);
 			jsonData.put("op", OP);
 			jsonData.put("create_time", createTime);
-			jsonData.put("author", userID);
+			jsonData.put("author", userID + "");
 			jsonData.put("id", id);
 			jsonData.put("features", new JSONObject(features));
 

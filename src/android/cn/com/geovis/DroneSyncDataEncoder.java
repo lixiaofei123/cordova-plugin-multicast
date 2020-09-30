@@ -95,7 +95,7 @@ public class DroneSyncDataEncoder extends AbstractDataEncoder {
 			jsonData.put("position", new double[] { lat, lng });
 			jsonData.put("offSet", new int[] { x, y });
 			jsonData.put("result", result);
-			jsonData.put("author", userId);
+			jsonData.put("author", userId +"");
 
 			return jsonData.toString();
 		} catch (Exception e) {

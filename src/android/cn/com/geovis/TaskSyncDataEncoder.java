@@ -65,7 +65,7 @@ public class TaskSyncDataEncoder extends AbstractDataEncoder {
       jsonData.put("op", "assign");
       jsonData.put("sendTime", sendTime);
       jsonData.put("taskinfo", new JSONObject(taskinfo));
-      jsonData.put("operator", userId);
+      jsonData.put("operator", userId + "");
 
       return jsonData.toString();
     } catch (Exception e) {

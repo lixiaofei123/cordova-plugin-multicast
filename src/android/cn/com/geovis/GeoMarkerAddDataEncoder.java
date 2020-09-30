@@ -109,7 +109,7 @@ public class GeoMarkerAddDataEncoder extends AbstractDataEncoder {
 			jsonData.put("id", id);
 			jsonData.put("sendTime", sendTime);
 			jsonData.put("classplot", classplot);
-			jsonData.put("author", userId);
+			jsonData.put("author", userId +"");
 			jsonData.put("features", new JSONObject(features));
 
 			return jsonData.toString();
@@ -123,6 +123,8 @@ public class GeoMarkerAddDataEncoder extends AbstractDataEncoder {
 
 		String msg = "{type:'sync-geo',op:'add',id:'dad44267-91b7-4c4d-a640-5cf5a48c0924',"
 				+ "sendTime:1601196974815,classplot:'geometric',author:123,features: { name : 'test'}}";
+		
+		//String msg = "{\"type\":\"hello\",\"username\":\"1\",\"userId\":\"1\",\"location\":[116.64878006692895,40.129726900746675]}";
 		System.out.println("编码后的数据长度是" + ByteUtils.stringToByte(msg).length);
 
 		DataEncoder data = new DataEncoder();

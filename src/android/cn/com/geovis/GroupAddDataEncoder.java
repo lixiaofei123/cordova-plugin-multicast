@@ -80,13 +80,13 @@ public class GroupAddDataEncoder extends AbstractDataEncoder {
 			jsonData.put("type", "add-newGroup");
 			jsonData.put("op", "add");
 			jsonData.put("id", groupId);
-			jsonData.put("author", userId);
+			jsonData.put("author", userId +"");
 			jsonData.put("sendTime", sendTime);
 
 			JSONArray array = new JSONArray();
 			for (int i = 0; i < num; i++) {
 				JSONObject parter = new JSONObject();
-				parter.put("userId", buffer.getShort());
+				parter.put("userId", buffer.getShort() +"");
 				array.put(parter);
 			}
 

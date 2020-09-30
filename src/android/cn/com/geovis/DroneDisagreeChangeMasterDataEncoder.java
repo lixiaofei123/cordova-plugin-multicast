@@ -50,7 +50,7 @@ public class DroneDisagreeChangeMasterDataEncoder extends AbstractDataEncoder {
 			JSONObject jsonData = new JSONObject();
 			jsonData.put("type", "changeMaster");
 			jsonData.put("superType", "disagree");
-			jsonData.put("newMaster", newMaster);
+			jsonData.put("newMaster", newMaster +"");
 
 			return jsonData.toString();
 		} catch (Exception e) {

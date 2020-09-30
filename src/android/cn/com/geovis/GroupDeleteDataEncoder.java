@@ -71,7 +71,7 @@ public class GroupDeleteDataEncoder extends AbstractDataEncoder {
 			JSONObject jsonData = new JSONObject();
 			jsonData.put("type", "delete-Group");
 			jsonData.put("id", groupId);
-			jsonData.put("author", userId);
+			jsonData.put("author", userId + "");
 			jsonData.put("sendTime", sendTime);
 
 			return jsonData.toString();
