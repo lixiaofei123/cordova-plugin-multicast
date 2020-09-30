@@ -69,7 +69,11 @@ public class HeartbeatDataEncoder extends AbstractDataEncoder {
 			jsonData.put("username", userId + "");
 			jsonData.put("userId", userId + "");
 			jsonData.put("sendTime", sendTime);
-			jsonData.put("location", new double[] { lat, lng });
+			
+			JSONArray locations = new JSONArray();
+			locations.put(lat);
+			locations.put(lng);
+			jsonData.put("location", locations);
 
 			return jsonData.toString();
 		} catch (Exception e) {

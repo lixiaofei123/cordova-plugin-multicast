@@ -92,8 +92,15 @@ public class DroneSyncDataEncoder extends AbstractDataEncoder {
 			jsonData.put("type", "update-plane");
 			jsonData.put("sendTime", sendTime);
 			jsonData.put("isflying", isflying);
-			jsonData.put("position", new double[] { lat, lng });
-			jsonData.put("offSet", new int[] { x, y });
+
+			JSONArray position = new JSONArray();
+			position.put(lat);
+			position.put(lng);
+			jsonData.put("position", position);
+			JSONArray offsets = new JSONArray();
+			offsets.put(x);
+			offsets.put(y);
+			jsonData.put("offSet", offsets);
 			jsonData.put("result", result);
 			jsonData.put("author", userId +"");
 
