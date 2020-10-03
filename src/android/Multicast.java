@@ -42,7 +42,7 @@ public class Multicast extends CordovaPlugin {
 
     private class LocationListener extends Thread{
 
-        private double[] locations = new double[2]{0,0};
+        private double[] locations = new double[2];
 
         public void run(){
 

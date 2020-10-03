@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-multicast",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Cordova Multicast Plugin",
   "cordova": {
     "id": "org.jarvus.cordova.multicast",
