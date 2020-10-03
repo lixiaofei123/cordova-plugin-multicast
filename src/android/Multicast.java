@@ -246,8 +246,7 @@ public class Multicast extends CordovaPlugin {
             int port = data.getInt(3);
 
             try {
-               // byte[] encodeData = dataEncoder.encode(message);
-               byte[] encodeData = message.getBytes();
+                byte[] encodeData = dataEncoder.encode(message);
                 Log.d(TAG, "send msg :" + message);
                 DatagramPacket packet = new DatagramPacket(encodeData, encodeData.length, InetAddress.getByName(address), port);
                 socket.send(packet);
