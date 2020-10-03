@@ -87,5 +87,5 @@ module.exports = {
     createSocket: createSocket,
     _onMessage: onMessage,
     initLocation: initLocation,
-    getLocation:getLocation,
+    getLocation: getLocation,
 }
