@@ -153,9 +153,9 @@ public class Multicast extends CordovaPlugin {
         }else if(action.equals("getLocation")){
             Log.d(TAG, "will  getLocation");
             if(m_locListener != null){
+                double[] locations = m_locListener.getLocation();
                 Log.d(TAG, "m_locListener is not  null,location is " + locations[0] + " , " + locations[1] );
                 Log.d(TAG, "["+locations[0] +","+ locations[1] +"]");
-                double[] locations = m_locListener.getLocation();
                 callbackContext.success("["+locations[0] +","+ locations[1] +"]");
             }else{
                 Log.d(TAG, "m_locListener is null");
