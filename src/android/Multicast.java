@@ -63,8 +63,8 @@ public class Multicast extends CordovaPlugin {
 
         synchronized public void setLocation(String info) {
 
-            String lonStr = info.split(",")[5];
-            String latStr = info.split(",")[3];
+            String lonStr = degreeModify(info.split(",")[5]);
+            String latStr = degreeModify(info.split(",")[3]);
 
             double lon = Double.parseDouble(lonStr);
             double lat = Double.parseDouble(latStr);
@@ -77,6 +77,16 @@ public class Multicast extends CordovaPlugin {
         synchronized public double[] getLocation(){
             return locations;
         }
+
+        public String degreeModify(String rawData) {
+            String head = rawData.split("\\.")[0];
+            String end = rawData.split("\\.")[1];
+            double res = Double.parseDouble(head);
+            res = res / 100;
+            String r = String.valueOf(res);
+            return r + end;
+          }
+
     }
 
     private class SocketListener extends Thread {
