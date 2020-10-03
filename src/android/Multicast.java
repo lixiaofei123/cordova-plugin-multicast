@@ -156,7 +156,7 @@ public class Multicast extends CordovaPlugin {
             }else{
                 callbackContext.error("Please call initLocation() to init Location Thread first");
             }
-        }if(action.equals("create")) {
+        }else if(action.equals("create")) {
             assert socket == null;
             final boolean isMulticast = data.getBoolean(1);
             try {
