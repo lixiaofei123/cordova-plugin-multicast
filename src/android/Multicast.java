@@ -29,12 +29,54 @@ public class Multicast extends CordovaPlugin {
     SparseArray<DatagramSocket> m_sockets;
     SparseArray<SocketListener> m_listeners;
 
+    LocationListener m_locListener;
+
     private IDataEncoder dataEncoder;
 
     public Multicast() {
         m_sockets = new SparseArray<DatagramSocket>();
         m_listeners = new SparseArray<SocketListener>();
         dataEncoder = new DataEncoder();
+    }
+
+
+    private class LocationListener extends Thread{
+
+        private double[] locations = new double[2]{0,0};
+
+        public void run(){
+
+            // 启动udpserder来监听位置信息
+            DatagramSocket socket = new DatagramSocket(8080);
+            byte[] data = new byte[10240];
+            DatagramPacket packet = new DatagramPacket(data, data.length);
+            Log.d(TAG, "Receive location thread Starting loop!");
+            while(true){
+                Log.d(TAG, "Waiting for location packet!");
+                socket.receive(packet);
+                String rawData = new String(data, 0, packet.getLength());
+                if(rawData.contains("$BDRMC")){
+                    setLocation(rawData);
+                }
+            }
+        }
+
+        synchronized public void setLocation(String info) {
+
+            String lonStr = info.split(",")[5];
+            String latStr = info.split(",")[3];
+
+            double lon = Double.parseDouble(lonStr);
+            double lat = Double.parseDouble(latStr);
+
+            locations[0] = lon;
+            locations[1] = lat;
+         
+          }
+
+        synchronized public double[] getLocation(){
+            return locations;
+        }
     }
 
     private class SocketListener extends Thread {
@@ -85,7 +127,18 @@ public class Multicast extends CordovaPlugin {
         final int id = data.getInt(0);
         DatagramSocket socket = m_sockets.get(id);
 
-        if (action.equals("create")) {
+        if (action.equals("initLocation")){
+            m_locListener = new LocationListener();
+            m_locListener.start();
+            callbackContext.success();
+        }else if(action.equals("getLocation")){
+            if(m_locListener != null){
+                double[] locations = m_locListener.getLocation();
+                callbackContext.success("["+locations[0] +","+ locations[1] +"]");
+            }else{
+                callbackContext.error("Please call initLocation() to init Location Thread first");
+            }
+        }if(action.equals("create")) {
             assert socket == null;
             final boolean isMulticast = data.getBoolean(1);
             try {

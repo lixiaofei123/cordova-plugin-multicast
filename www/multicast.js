@@ -1,5 +1,20 @@
 var exec = cordova.require('cordova/exec');
 
+
+
+function Location(){
+
+}
+
+Location.prototype.init = function(){
+    exec(null,null,'Multicast','initLocation',[])
+}
+
+Location.prototype.getLoc = function(success, failure){
+    exec(success,failure,'Multicast','getLocation',[])
+}
+
+
 // Events: 'message', 'error'
 function Socket(type) {
     this._multicastSocket = type === 'multicast-udp4';
@@ -70,7 +85,10 @@ function onMessage(id, msg, remoteAddress, remotePort) {
     }
 }
 
+
+
 module.exports = {
     createSocket: createSocket,
-    _onMessage: onMessage
+    _onMessage: onMessage,
+    location: new Location()
 }
