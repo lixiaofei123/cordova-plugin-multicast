@@ -144,16 +144,21 @@ public class Multicast extends CordovaPlugin {
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
         final int id = data.getInt(0);
         DatagramSocket socket = m_sockets.get(id);
-
+        Log.d(TAG, "action is " + action);
         if (action.equals("initLocation")){
+            Log.d(TAG, "will initLocation");
             m_locListener = new LocationListener();
             m_locListener.start();
             callbackContext.success();
         }else if(action.equals("getLocation")){
+            Log.d(TAG, "will  getLocation");
             if(m_locListener != null){
+                Log.d(TAG, "m_locListener is not  null,location is " + locations[0] + " , " + locations[1] );
+                Log.d(TAG, "["+locations[0] +","+ locations[1] +"]");
                 double[] locations = m_locListener.getLocation();
                 callbackContext.success("["+locations[0] +","+ locations[1] +"]");
             }else{
+                Log.d(TAG, "m_locListener is null");
                 callbackContext.error("Please call initLocation() to init Location Thread first");
             }
         }else if(action.equals("create")) {
