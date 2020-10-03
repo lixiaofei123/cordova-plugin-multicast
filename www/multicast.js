@@ -3,11 +3,11 @@ var exec = cordova.require('cordova/exec');
 
 
 function initLocation(){
-    exec(null,null,'Multicast','initLocation',[])
+    exec(null,null,'Multicast','initLocation',[1])
 }
 
 function getLocation(success, failure){
-    exec(success,failure,'Multicast','getLocation',[])
+    exec(success,failure,'Multicast','getLocation',[1])
 }
 
 
