@@ -2,15 +2,11 @@ var exec = cordova.require('cordova/exec');
 
 
 
-function Location(){
-
-}
-
-Location.prototype.init = function(){
+function initLocation(){
     exec(null,null,'Multicast','initLocation',[])
 }
 
-Location.prototype.getLoc = function(success, failure){
+function getLocation(success, failure){
     exec(success,failure,'Multicast','getLocation',[])
 }
 
@@ -90,5 +86,6 @@ function onMessage(id, msg, remoteAddress, remotePort) {
 module.exports = {
     createSocket: createSocket,
     _onMessage: onMessage,
-    location: new Location()
+    initLocation: initLocation,
+    getLocation:getLocation,
 }

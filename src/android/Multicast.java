@@ -45,6 +45,7 @@ public class Multicast extends CordovaPlugin {
         private double[] locations = new double[2];
 
         public void run(){
+            
 
             try {
                  // 启动udpserder来监听位置信息
@@ -53,11 +54,15 @@ public class Multicast extends CordovaPlugin {
                 DatagramPacket packet = new DatagramPacket(data, data.length);
                 Log.d(TAG, "Receive location thread Starting loop!");
                 while(true){
-                    Log.d(TAG, "Waiting for location packet!");
-                    socket.receive(packet);
-                    String rawData = new String(data, 0, packet.getLength());
-                    if(rawData.contains("$BDRMC")){
-                        setLocation(rawData);
+                    try{
+                        Log.d(TAG, "Waiting for location packet!");
+                        socket.receive(packet);
+                        String rawData = new String(data, 0, packet.getLength());
+                        if(rawData.contains("$BDRMC")){
+                            setLocation(rawData);
+                        }
+                    }catch(Exception e){
+                        Log.d(TAG, "Receive exception:" + e.toString());
                     }
                 }
             } catch (Exception e) {
