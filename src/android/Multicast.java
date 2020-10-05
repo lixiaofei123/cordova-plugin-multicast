@@ -177,16 +177,19 @@ public class Multicast extends CordovaPlugin {
         } else if (action.equals("bind")) {
             final int port = data.getInt(1);
             try {
-                String interfaceName = data.getString(2);
-                Log.d(TAG, "the interfaceName is " + interfaceName);
-                String hostAddress = findNetworkInterfaceByName(interfaceName);
-                if(hostAddress != null){
-                    Log.d(TAG, "will bind " + hostAddress);
-                    socket.bind(new InetSocketAddress(hostAddress,port));
-                }else{
-                    Log.d(TAG, "not query valid ip address");
-                    socket.bind(new InetSocketAddress(port));
-                }
+//                 String interfaceName = data.getString(2);
+//                 Log.d(TAG, "the interfaceName is " + interfaceName);
+//                 String hostAddress = findNetworkInterfaceByName(interfaceName);
+// 		    hostAddress
+//                 if(hostAddress != null){
+//                     Log.d(TAG, "will bind " + hostAddress);
+//                     socket.bind(new InetSocketAddress(hostAddress,port));
+//                 }else{
+//                     Log.d(TAG, "not query valid ip address");
+//                     socket.bind(new InetSocketAddress(port));
+//                 }
+		    
+		socket.bind(new InetSocketAddress(port));
                 SocketListener listener = new SocketListener(id, socket);
                 m_listeners.put(id, listener);
                 listener.start();
