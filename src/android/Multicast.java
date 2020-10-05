@@ -45,7 +45,9 @@ public class Multicast extends CordovaPlugin {
         private double[] locations = new double[2];
 
         public void run(){
-            
+            	
+	    locations[0] = 116.326423;
+            locations[1] = 39.989062;
 
             try {
                  // 启动udpserder来监听位置信息
